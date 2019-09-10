@@ -31,3 +31,41 @@ echo
     echo
 
 echo Оперативная память:
+echo
+    echo Всего -
+    free| awk 'NR == 2{print $2}'
+    echo
+    
+    echo Доступно -
+    free| awk 'NR == 2{print $7}'
+    echo
+
+echo Жесткий диск:
+echo
+    echo Всего -
+    lsblk | awk ' NR ==2{print $4}'
+    echo
+
+    echo Доступно -
+    df -h | awk ' NR ==6{print $4}'
+    echo
+
+    echo Смонтировано в корневую директрорию 
+    lsblk | grep -i "/" | cut -c1-7
+    echo
+    
+    echo SWAP всего - 
+    free | awk 'NR == 3{print $2}'
+    echo
+
+
+    echo SWAP доступно -
+    free | awk 'NR == 3{print$4}'
+    echo
+
+echo Сетевые интерфейсы:
+echo
+    echo Количество сетевых интерфейсов -
+    
+    echo
+
