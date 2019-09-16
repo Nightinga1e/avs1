@@ -1,4 +1,6 @@
 #!/bin/bash
+
+V_INTERFACE_NUM = $(ls -A /sys/class/net | wc -l)
 echo Дата: 
 date -R
 echo 
@@ -66,6 +68,19 @@ echo
 echo Сетевые интерфейсы:
 echo
     echo Количество сетевых интерфейсов -
-    
+	ls -A /sys/class/net | wc -l
     echo
+
+for ((i=2; i<=V_INTERFACE_NUM; i++))
+do
+	V_INTERFACE_NAME=$(ip -o -f inet address | awk -F' ' '{print $2}' | tr '\n' ' ' | awk -v var="$i" 'BEGIN {FS = " "} {print $var}')
+	V_INTERFACE_IPAD=$(ip -o -f inet address | awk -F' ' '{print $4}')
+#	V_INTERFACE_MACAD=$(cat /sys/class/net/$V_INTERFACE_NAME/address) 
+	printf "\033[s\033[4C$i\033[s\033[4C$V_INTERFACE_NAME\n\033[u\033[12C$V_INTERFACE_IPAD\n"
+#	printf "\033[s\033$i\033[s\033[4C$V_INTERFACE_NAME\033[u\033[12C$V_INTERFACE_IPAD\033[u\033[36C$V_INTERFACE_MACAD\n"
+done
+
+#lspci
+
+
 
