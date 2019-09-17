@@ -71,14 +71,33 @@ echo
 	ls -A /sys/class/net | wc -l
     echo
 
-for ((i=2; i<=V_INTERFACE_NUM; i++))
-do
-	V_INTERFACE_NAME=$(ip -o -f inet address | awk -F' ' '{print $2}' | tr '\n' ' ' | awk -v var="$i" 'BEGIN {FS = " "} {print $var}')
-	V_INTERFACE_IPAD=$(ip -o -f inet address | awk -F' ' '{print $4}')
+#for ((i=0; i<=V_INTERFACE_NUM; i++))
+#do
+    #    V_INTERFACE_NAME=$(ip -o -f inet address | awk -F' ' '{print $2}')
+    echo "#  name         ip                  mac                        speed"
+    echo -ne "1: " & ip -o -f inet address | awk -F' ' 'NR == 1{printf $2}'
+    echo -ne "     "
+    echo -ne "     "& ip -o -f inet address | awk -F' ' 'NR == 1{printf $4}'
+
+    echo
+    echo -ne "2: " & ip -o -f inet address | awk -F' ' 'NR == 2{printf $2}'
+    echo -ne "      "
+    echo -ne & ip -o -f inet address | awk -F' ' 'NR == 2{printf $4}'
+    echo -ne "      " & ifconfig | grep -i ether| awk 'NR == 1{printf $2}'
+    echo -ne "          " & cat /sys/class/net/enp2s0/speed
+
+    echo -ne "3: " & ip -o -f inet address | awk -F' ' 'NR == 3{printf $2}'
+    echo -ne "      "
+    echo -ne & ip -o -f inet address | awk -F' ' 'NR ==3{printf $4}'
+    echo -ne "      " & ifconfig | grep -i ether| awk ' NR ==2{printf $2}'
+
+    cat /sys/class/net/enp2s0/speed
+#	V_INTERFACE_NAME=$(ip -o -f inet address | awk -F' ' '{print $2}' | tr '\n' ' ' | awk -v var="$i" 'BEGIN {FS = " "} {print $var}')
+#	V_INTERFACE_IPAD=$(ip -o -f inet address | awk -F' ' '{print $4}')
 #	V_INTERFACE_MACAD=$(cat /sys/class/net/$V_INTERFACE_NAME/address) 
-	printf "\033[s\033[4C$i\033[s\033[4C$V_INTERFACE_NAME\n\033[u\033[12C$V_INTERFACE_IPAD\n"
+#	printf "\033[s\033[4C$i\033[s\033[4C$V_INTERFACE_NAME\n\033[u\033[12C$V_INTERFACE_IPAD\n"
 #	printf "\033[s\033$i\033[s\033[4C$V_INTERFACE_NAME\033[u\033[12C$V_INTERFACE_IPAD\033[u\033[36C$V_INTERFACE_MACAD\n"
-done
+#done
 
 #lspci
 
